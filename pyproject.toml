@@ -206,7 +206,13 @@ extend-exclude = '''
 
 [tool.coverage.run]
 source = ["tonika_bus"]
-omit = ["*/tests/*", "*/test_*.py", "*/__pycache__/*"]
+omit = [
+  "*/tests/*",
+  "*/test_*.py",
+  "*/__pycache__/*",
+  "*/example_usage.py",  # ← Add this
+  "*/examples/*"         # ← Add this
+]
 
 [tool.coverage.report]
 exclude_lines = [

@@ -765,3 +765,5 @@ class TestTonikaBusIntegration:
         await asyncio.gather(task1, task2, task3)
         
         assert results == ["step1", "step2", "step3"]
+
+
