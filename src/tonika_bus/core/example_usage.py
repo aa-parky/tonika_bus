@@ -11,7 +11,7 @@ import asyncio
 import sys
 from pathlib import Path
 
-# Add parent directory to path for imports
+# Add parent tests to path for imports
 sys.path.insert(0, str(Path(__file__).parent))
 
 from events import TonikaEvent
