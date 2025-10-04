@@ -83,7 +83,7 @@ Documentation = "https://github.com/aa-parky/tonika_bus/docs"
 "Bug Tracker" = "https://github.com/aa-parky/tonika_bus/issues"
 
 [build-system]
-requires = ["setuptools>=68.0", "wheel"]
+requires = ["setuptools>=68.0", "wheel"]  # setuptools 68+ works fine with 3.11
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
