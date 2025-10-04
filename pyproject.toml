@@ -3,7 +3,7 @@ name = "tonika-bus"
 version = "0.2.0"
 description = "Event-driven message broker for modular music production - Music as Resistance"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.11"
 license = { text = "GPL-3.0-or-later" }
 authors = [{ name = "aa-parky", email = "aa-parky@gmail.com" }]
 keywords = ["music", "midi", "event-bus", "modular", "audio", "music-theory"]
@@ -162,7 +162,7 @@ ignore = [
 # ============================================================================
 
 [tool.mypy]
-python_version = "3.12"
+python_version = "3.11"
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = true
