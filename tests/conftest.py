@@ -20,10 +20,10 @@ from tonika_bus.core.bus import TonikaBus
 def fresh_bus():
     """
     Provide a fresh Bus instance for each test.
-
+    
     Resets the singleton to ensure test isolation.
     Each test gets a clean Bus with no handlers or events.
-
+    
     Usage:
         def test_something(fresh_bus):
             fresh_bus.emit("test:event", {})
@@ -42,9 +42,9 @@ def fresh_bus():
 def bus_with_debug(fresh_bus):
     """
     Provide a Bus with debug mode enabled.
-
+    
     Useful for tests that need to verify debug behavior.
-
+    
     Usage:
         def test_debug_feature(bus_with_debug):
             assert bus_with_debug.debug is True
