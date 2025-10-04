@@ -10,7 +10,7 @@ sys.path.insert(0, os.path.abspath('../src' ))
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'tonika_bus'
+project = 'tonika=bus'
 copyright = '2025, aa-parky'
 author = 'aa-parky'
 release = '0.2.0'
