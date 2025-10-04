@@ -13,6 +13,7 @@ These tests verify standardized module lifecycle management.
 """
 
 import asyncio
+import contextlib
 
 import pytest
 
@@ -401,10 +402,8 @@ class TestTonikaModuleStatus:
         """Test that status is ERROR after init failure"""
         module = FailingModule()
 
-        try:
+        with contextlib.suppress(ValueError):
             await module.init()
-        except ValueError:
-            pass
 
         assert module.status == ModuleStatus.ERROR
 
