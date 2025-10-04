@@ -24,6 +24,7 @@ from tonika_bus.core.module import TonikaModule
 # Test Module Implementations
 # ============================================================================
 
+
 class SimpleModule(TonikaModule):
     """Simple test module"""
 
@@ -94,6 +95,7 @@ class AsyncWaitingModule(TonikaModule):
 # ============================================================================
 # Module Lifecycle Tests
 # ============================================================================
+
 
 @pytest.mark.unit
 class TestTonikaModuleLifecycle:
@@ -184,6 +186,7 @@ class TestTonikaModuleLifecycle:
 # Event Handling Tests
 # ============================================================================
 
+
 @pytest.mark.unit
 class TestTonikaModuleEventHandling:
     """Test module event handling"""
@@ -248,6 +251,7 @@ class TestTonikaModuleEventHandling:
     @pytest.mark.asyncio
     async def test_module_multiple_subscriptions(self, fresh_bus):
         """Test module with multiple event subscriptions"""
+
         class MultiSubscriber(TonikaModule):
             def __init__(self):
                 super().__init__(name="MultiSub", version="1.0.0")
@@ -255,8 +259,8 @@ class TestTonikaModuleEventHandling:
                 self.event_b_count = 0
 
             async def _initialize(self):
-                self.on("event:a", lambda e: setattr(self, 'event_a_count', self.event_a_count + 1))
-                self.on("event:b", lambda e: setattr(self, 'event_b_count', self.event_b_count + 1))
+                self.on("event:a", lambda e: setattr(self, "event_a_count", self.event_a_count + 1))
+                self.on("event:b", lambda e: setattr(self, "event_b_count", self.event_b_count + 1))
 
         module = MultiSubscriber()
         await module.init()
@@ -272,13 +276,14 @@ class TestTonikaModuleEventHandling:
     @pytest.mark.asyncio
     async def test_module_once_subscription(self, fresh_bus):
         """Test module using once() for one-time subscription"""
+
         class OnceSubscriber(TonikaModule):
             def __init__(self):
                 super().__init__(name="OnceSub", version="1.0.0")
                 self.call_count = 0
 
             async def _initialize(self):
-                self.once("test:event", lambda e: setattr(self, 'call_count', self.call_count + 1))
+                self.once("test:event", lambda e: setattr(self, "call_count", self.call_count + 1))
 
         module = OnceSubscriber()
         await module.init()
@@ -295,6 +300,7 @@ class TestTonikaModuleEventHandling:
 # ============================================================================
 # Async Operation Tests
 # ============================================================================
+
 
 @pytest.mark.unit
 class TestTonikaModuleAsync:
@@ -335,6 +341,7 @@ class TestTonikaModuleAsync:
     @pytest.mark.asyncio
     async def test_module_async_initialization(self, fresh_bus):
         """Test module with async initialization logic"""
+
         class AsyncInitModule(TonikaModule):
             def __init__(self):
                 super().__init__(name="AsyncInit", version="1.0.0")
@@ -355,6 +362,7 @@ class TestTonikaModuleAsync:
 # ============================================================================
 # Status Management Tests
 # ============================================================================
+
 
 @pytest.mark.unit
 class TestTonikaModuleStatus:
@@ -424,6 +432,7 @@ class TestTonikaModuleStatus:
 # Module Properties Tests
 # ============================================================================
 
+
 @pytest.mark.unit
 class TestTonikaModuleProperties:
     """Test module properties"""
@@ -448,13 +457,14 @@ class TestTonikaModuleProperties:
         module = SimpleModule()
 
         # Module tracks unsubscribe functions in _unsubs
-        assert hasattr(module, '_unsubs')
+        assert hasattr(module, "_unsubs")
         assert isinstance(module._unsubs, list)
 
 
 # ============================================================================
 # Integration Tests
 # ============================================================================
+
 
 @pytest.mark.integration
 class TestTonikaModuleIntegration:
@@ -463,6 +473,7 @@ class TestTonikaModuleIntegration:
     @pytest.mark.asyncio
     async def test_multiple_modules_communication(self, fresh_bus):
         """Test multiple modules communicating via bus"""
+
         class SenderModule(TonikaModule):
             def __init__(self):
                 super().__init__(name="Sender", version="1.0.0")

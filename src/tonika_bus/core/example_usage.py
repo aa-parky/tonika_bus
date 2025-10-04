@@ -22,7 +22,7 @@ from module import TonikaModule
 class ExampleModule(TonikaModule):
     """
     Example module showing how to use the refactored Bus.
-    
+
     Goblin Law #7: No Fat Orcs - does one thing well
     """
 

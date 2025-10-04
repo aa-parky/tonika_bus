@@ -21,17 +21,18 @@ from tonika_bus.core.events import EventMetadata, ModuleStatus, TonikaEvent
 # ModuleStatus Tests
 # ============================================================================
 
+
 @pytest.mark.unit
 class TestModuleStatus:
     """Test ModuleStatus enum"""
 
     def test_all_states_defined(self):
         """Test that all expected states are defined"""
-        assert hasattr(ModuleStatus, 'UNINITIALIZED')
-        assert hasattr(ModuleStatus, 'INITIALIZING')
-        assert hasattr(ModuleStatus, 'READY')
-        assert hasattr(ModuleStatus, 'ERROR')
-        assert hasattr(ModuleStatus, 'DESTROYED')
+        assert hasattr(ModuleStatus, "UNINITIALIZED")
+        assert hasattr(ModuleStatus, "INITIALIZING")
+        assert hasattr(ModuleStatus, "READY")
+        assert hasattr(ModuleStatus, "ERROR")
+        assert hasattr(ModuleStatus, "DESTROYED")
 
     def test_status_values(self):
         """Test that status values are correct"""
@@ -67,6 +68,7 @@ class TestModuleStatus:
 # ============================================================================
 # EventMetadata Tests
 # ============================================================================
+
 
 @pytest.mark.unit
 class TestEventMetadata:
@@ -144,14 +146,15 @@ class TestEventMetadata:
         """Test that all metadata fields are accessible"""
         meta = EventMetadata.create(source="TestSource", version="3.0.0")
 
-        assert hasattr(meta, 'source')
-        assert hasattr(meta, 'version')
-        assert hasattr(meta, 'timestamp')
+        assert hasattr(meta, "source")
+        assert hasattr(meta, "version")
+        assert hasattr(meta, "timestamp")
 
 
 # ============================================================================
 # TonikaEvent Tests
 # ============================================================================
+
 
 @pytest.mark.unit
 class TestTonikaEvent:
@@ -217,11 +220,7 @@ class TestTonikaEvent:
     def test_event_with_nested_detail(self):
         """Test event with nested data structures"""
         meta = EventMetadata.create(source="Test", version="1.0.0")
-        detail = {
-            "user": {"name": "Alice", "id": 123},
-            "items": [1, 2, 3],
-            "active": True
-        }
+        detail = {"user": {"name": "Alice", "id": 123}, "items": [1, 2, 3], "active": True}
         event = TonikaEvent(type="test:nested", detail=detail, _meta=meta)
 
         assert event.detail["user"]["name"] == "Alice"
@@ -282,7 +281,7 @@ class TestTonikaEvent:
         large_detail = {
             "data": "x" * 10000,
             "list": list(range(1000)),
-            "nested": {"deep": {"structure": {"value": 42}}}
+            "nested": {"deep": {"structure": {"value": 42}}},
         }
         event = TonikaEvent(type="test:large", detail=large_detail, _meta=meta)
 
@@ -304,9 +303,9 @@ class TestTonikaEvent:
         meta = EventMetadata.create(source="Test", version="1.0.0")
         event = TonikaEvent(type="test:event", detail={"data": 123}, _meta=meta)
 
-        assert hasattr(event, 'type')
-        assert hasattr(event, 'detail')
-        assert hasattr(event, '_meta')
+        assert hasattr(event, "type")
+        assert hasattr(event, "detail")
+        assert hasattr(event, "_meta")
 
     def test_event_detail_modification(self):
         """Test that event detail can be modified (mutable)"""
@@ -345,6 +344,7 @@ class TestTonikaEvent:
 # Integration Tests
 # ============================================================================
 
+
 @pytest.mark.integration
 class TestEventStructuresIntegration:
     """Integration tests for event structures working together"""
@@ -358,7 +358,7 @@ class TestEventStructuresIntegration:
         event = TonikaEvent(
             type="integration:test",
             detail={"message": "Integration test", "status": "success"},
-            _meta=meta
+            _meta=meta,
         )
 
         # Verify all parts
@@ -382,9 +382,7 @@ class TestEventStructuresIntegration:
         # New event from processing
         meta2 = EventMetadata.create(source="Module2", version="1.0.0")
         processed_event = TonikaEvent(
-            type="user:action:processed",
-            detail=processed_data,
-            _meta=meta2
+            type="user:action:processed", detail=processed_data, _meta=meta2
         )
 
         # Verify chain
@@ -413,7 +411,7 @@ class TestEventStructuresIntegration:
             event = TonikaEvent(
                 type="module:status:changed",
                 detail={"status": status.value, "module": "TestModule"},
-                _meta=meta
+                _meta=meta,
             )
 
             assert event.detail["status"] == status.value

@@ -47,7 +47,7 @@ class TonikaBus:
     preventing direct coupling between modules.
     """
 
-    _instance: Optional['TonikaBus'] = None
+    _instance: Optional["TonikaBus"] = None
     _initialized: bool = False
 
     def __new__(cls):
@@ -86,7 +86,7 @@ class TonikaBus:
 
             # Debug mode and logging
             self.debug: bool = False
-            self.logger = logging.getLogger('TonikaBus')
+            self.logger = logging.getLogger("TonikaBus")
 
             # Wait promises for async event waiting
             self._wait_promises: dict[str, list[asyncio.Future]] = {}
@@ -106,11 +106,7 @@ class TonikaBus:
         self.logger.setLevel(level)
 
     def emit(
-            self,
-            event_type: str,
-            detail: Any,
-            source: str = "unknown",
-            version: str = "0.0.0"
+        self, event_type: str, detail: Any, source: str = "unknown", version: str = "0.0.0"
     ) -> None:
         """
         Emit an event to all subscribers.
@@ -128,9 +124,7 @@ class TonikaBus:
         """
         # Create event with metadata
         event = TonikaEvent(
-            type=event_type,
-            detail=detail,
-            _meta=EventMetadata.create(source, version)
+            type=event_type, detail=detail, _meta=EventMetadata.create(source, version)
         )
 
         # Add to event log for debugging
@@ -148,10 +142,7 @@ class TonikaBus:
                 try:
                     handler(event)
                 except Exception as e:
-                    self.logger.error(
-                        f"❌ Handler error for {event_type}: {e}",
-                        exc_info=True
-                    )
+                    self.logger.error(f"❌ Handler error for {event_type}: {e}", exc_info=True)
 
         # Resolve any wait_for promises
         if event_type in self._wait_promises:
@@ -183,9 +174,7 @@ class TonikaBus:
 
         if self.debug:
             handler_count = len(self.handlers[event_type])
-            self.logger.debug(
-                f"👂 SUBSCRIBE: {event_type} (total handlers: {handler_count})"
-            )
+            self.logger.debug(f"👂 SUBSCRIBE: {event_type} (total handlers: {handler_count})")
 
         # Return unsubscribe function
         def unsubscribe():
@@ -219,11 +208,7 @@ class TonikaBus:
         unsub = self.on(event_type, one_time_handler)
         return unsub
 
-    async def wait_for(
-            self,
-            event_type: str,
-            timeout_ms: int | None = None
-    ) -> TonikaEvent:
+    async def wait_for(self, event_type: str, timeout_ms: int | None = None) -> TonikaEvent:
         """
         Wait for a specific event before continuing (async).
 

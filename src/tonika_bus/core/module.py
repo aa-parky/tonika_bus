@@ -44,12 +44,7 @@ class TonikaModule:
     Modules communicate through the Bus, never directly.
     """
 
-    def __init__(
-            self,
-            name: str,
-            version: str = "0.0.0",
-            description: str = ""
-    ):
+    def __init__(self, name: str, version: str = "0.0.0", description: str = ""):
         """
         Initialize a Tonika module.
 
@@ -71,7 +66,7 @@ class TonikaModule:
         self._bus = TonikaBus()
 
         # Module-specific logger
-        self.logger = logging.getLogger(f'TonikaModule.{name}')
+        self.logger = logging.getLogger(f"TonikaModule.{name}")
 
         # Register with Bus
         # Goblin Law #13: Keep the Guest List Clean
@@ -92,37 +87,35 @@ class TonikaModule:
         """
         try:
             self.status = ModuleStatus.INITIALIZING
-            self.emit("module:initializing", {
-                "name": self.name,
-                "version": self.version,
-                "status": self.status.value
-            })
+            self.emit(
+                "module:initializing",
+                {"name": self.name, "version": self.version, "status": self.status.value},
+            )
 
             # Call custom initialization
             # Goblin Law #32: Never Patch a Monkey - extend, don't overwrite
             await self._initialize()
 
             self.status = ModuleStatus.READY
-            self.emit("module:ready", {
-                "name": self.name,
-                "version": self.version,
-                "status": self.status.value
-            })
+            self.emit(
+                "module:ready",
+                {"name": self.name, "version": self.version, "status": self.status.value},
+            )
 
             self.logger.info(f"✅ Module ready: {self.name}")
 
         except Exception as e:
             self.status = ModuleStatus.ERROR
-            self.emit("module:error", {
-                "name": self.name,
-                "version": self.version,
-                "status": self.status.value,
-                "error": str(e)
-            })
-            self.logger.error(
-                f"❌ Module init failed: {self.name} - {e}",
-                exc_info=True
+            self.emit(
+                "module:error",
+                {
+                    "name": self.name,
+                    "version": self.version,
+                    "status": self.status.value,
+                    "error": str(e),
+                },
             )
+            self.logger.error(f"❌ Module init failed: {self.name} - {e}", exc_info=True)
             raise
 
     async def _initialize(self) -> None:
@@ -153,12 +146,7 @@ class TonikaModule:
             event_type: Event type (e.g., "midi:note-on")
             detail: Event payload
         """
-        self._bus.emit(
-            event_type,
-            detail,
-            source=self.name,
-            version=self.version
-        )
+        self._bus.emit(event_type, detail, source=self.name, version=self.version)
 
     def on(self, event_type: str, handler: EventHandler) -> None:
         """
@@ -189,11 +177,7 @@ class TonikaModule:
         unsub = self._bus.once(event_type, handler)
         self._unsubs.append(unsub)
 
-    async def wait_for(
-            self,
-            event_type: str,
-            timeout_ms: int | None = None
-    ) -> TonikaEvent:
+    async def wait_for(self, event_type: str, timeout_ms: int | None = None) -> TonikaEvent:
         """
         Wait for a specific event before continuing.
 
@@ -233,10 +217,7 @@ class TonikaModule:
 
         # Emit destruction event BEFORE unregistering
         # so other modules can react to this module going away
-        self.emit("module:destroyed", {
-            "name": self.name,
-            "version": self.version
-        })
+        self.emit("module:destroyed", {"name": self.name, "version": self.version})
 
         # Remove from registry
         # Goblin Law #13: Keep the Guest List Clean
@@ -256,5 +237,5 @@ class TonikaModule:
             "name": self.name,
             "version": self.version,
             "description": self.description,
-            "status": self.status.value
+            "status": self.status.value,
         }

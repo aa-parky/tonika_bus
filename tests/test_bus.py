@@ -26,6 +26,7 @@ from tonika_bus.core.events import TonikaEvent
 # Singleton Pattern Tests
 # ============================================================================
 
+
 @pytest.mark.unit
 class TestTonikaBusSingleton:
     """Test singleton pattern implementation"""
@@ -70,6 +71,7 @@ class TestTonikaBusSingleton:
 # ============================================================================
 # Event Emission Tests
 # ============================================================================
+
 
 @pytest.mark.unit
 class TestTonikaBusEmit:
@@ -216,12 +218,14 @@ class TestTonikaBusEmit:
 # Subscription Tests
 # ============================================================================
 
+
 @pytest.mark.unit
 class TestTonikaBusSubscription:
     """Test subscription and unsubscription"""
 
     def test_on_returns_unsubscribe_function(self, fresh_bus):
         """Test that on() returns a callable unsubscribe function"""
+
         def handler(event):
             pass
 
@@ -231,6 +235,7 @@ class TestTonikaBusSubscription:
 
     def test_on_registers_handler(self, fresh_bus):
         """Test that on() registers the handler"""
+
         def handler(event):
             pass
 
@@ -282,6 +287,7 @@ class TestTonikaBusSubscription:
 
     def test_unsubscribe_is_idempotent(self, fresh_bus):
         """Test that calling unsubscribe multiple times is safe"""
+
         def handler(event):
             pass
 
@@ -310,6 +316,7 @@ class TestTonikaBusSubscription:
 
     def test_once_returns_unsubscribe_function(self, fresh_bus):
         """Test that once() returns an unsubscribe function"""
+
         def handler(event):
             pass
 
@@ -361,6 +368,7 @@ class TestTonikaBusSubscription:
 # Async Tests
 # ============================================================================
 
+
 @pytest.mark.unit
 class TestTonikaBusAsync:
     """Test async functionality"""
@@ -368,6 +376,7 @@ class TestTonikaBusAsync:
     @pytest.mark.asyncio
     async def test_wait_for_resolves_on_event(self, fresh_bus):
         """Test that wait_for resolves when event is emitted"""
+
         async def emit_later():
             await asyncio.sleep(0.1)
             fresh_bus.emit("test:event", {"data": 42})
@@ -390,6 +399,7 @@ class TestTonikaBusAsync:
     @pytest.mark.asyncio
     async def test_wait_for_without_timeout(self, fresh_bus):
         """Test wait_for without timeout"""
+
         async def emit_soon():
             await asyncio.sleep(0.05)
             fresh_bus.emit("test:event", {"data": 123})
@@ -430,6 +440,7 @@ class TestTonikaBusAsync:
 # ============================================================================
 # Event Log Tests
 # ============================================================================
+
 
 @pytest.mark.unit
 class TestTonikaBusEventLog:
@@ -513,12 +524,14 @@ class TestTonikaBusEventLog:
 # Module Registry Tests
 # ============================================================================
 
+
 @pytest.mark.unit
 class TestTonikaBusModuleRegistry:
     """Test module registry functionality"""
 
     def test_register_module(self, fresh_bus):
         """Test registering a module"""
+
         class MockModule:
             name = "TestModule"
             version = "1.0.0"
@@ -531,6 +544,7 @@ class TestTonikaBusModuleRegistry:
 
     def test_register_multiple_modules(self, fresh_bus):
         """Test registering multiple modules"""
+
         class MockModule:
             def __init__(self, name):
                 self.name = name
@@ -552,6 +566,7 @@ class TestTonikaBusModuleRegistry:
 
     def test_unregister_module(self, fresh_bus):
         """Test unregistering a module"""
+
         class MockModule:
             name = "TestModule"
             version = "1.0.0"
@@ -575,6 +590,7 @@ class TestTonikaBusModuleRegistry:
 
     def test_register_overwrites_existing(self, fresh_bus):
         """Test that registering with same name overwrites"""
+
         class MockModule:
             def __init__(self, name, data):
                 self.name = name
@@ -594,6 +610,7 @@ class TestTonikaBusModuleRegistry:
 # ============================================================================
 # Debug Mode Tests
 # ============================================================================
+
 
 @pytest.mark.unit
 class TestTonikaBusDebug:
@@ -624,6 +641,7 @@ class TestTonikaBusDebug:
 # ============================================================================
 # Edge Cases and Error Handling
 # ============================================================================
+
 
 @pytest.mark.unit
 class TestTonikaBusEdgeCases:
@@ -707,6 +725,7 @@ class TestTonikaBusEdgeCases:
 # Integration Tests
 # ============================================================================
 
+
 @pytest.mark.integration
 class TestTonikaBusIntegration:
     """Integration tests for complex scenarios"""
@@ -717,7 +736,7 @@ class TestTonikaBusIntegration:
 
         def processor(event):
             results.append(f"processed:{event.detail['value']}")
-            fresh_bus.emit("processed", {"original": event.detail['value']})
+            fresh_bus.emit("processed", {"original": event.detail["value"]})
 
         def logger(event):
             results.append(f"logged:{event.detail['original']}")
@@ -764,5 +783,3 @@ class TestTonikaBusIntegration:
         await asyncio.gather(task1, task2, task3)
 
         assert results == ["step1", "step2", "step3"]
-
-

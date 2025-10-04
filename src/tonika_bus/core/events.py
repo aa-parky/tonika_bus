@@ -23,6 +23,7 @@ class ModuleStatus(Enum):
     Goblin Law #41: Only One Drumbeat of Readiness
     These are the only lifecycle states a module may have.
     """
+
     UNINITIALIZED = "uninitialized"
     INITIALIZING = "initializing"
     READY = "ready"
@@ -43,12 +44,13 @@ class EventMetadata:
         source: Module name that emitted the event
         version: Module version for debugging compatibility issues
     """
+
     timestamp: int  # Unix epoch milliseconds
     source: str  # Which module emitted it
     version: str  # Module version for debugging
 
     @staticmethod
-    def create(source: str, version: str) -> 'EventMetadata':
+    def create(source: str, version: str) -> "EventMetadata":
         """
         Factory method to create metadata with current timestamp.
 
@@ -60,9 +62,7 @@ class EventMetadata:
             EventMetadata with current timestamp
         """
         return EventMetadata(
-            timestamp=int(datetime.now().timestamp() * 1000),
-            source=source,
-            version=version
+            timestamp=int(datetime.now().timestamp() * 1000), source=source, version=version
         )
 
 
@@ -82,6 +82,7 @@ class TonikaEvent:
         detail: The actual payload data (can be any type)
         _meta: Context metadata (timestamp, source, version)
     """
+
     type: str  # e.g., "midi:note-on", "module:ready"
     detail: Any  # The actual payload data
     _meta: EventMetadata  # Context: timestamp, source, version
