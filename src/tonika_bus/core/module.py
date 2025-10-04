@@ -13,15 +13,16 @@ Part of the Tonika project - Music as Resistance
 """
 
 import logging
-from typing import Any, Callable, Dict, List, Optional
+from collections.abc import Callable
+from typing import Any
 
 # Handle both package and standalone imports
 try:
-    from .bus import TonikaBus, EventHandler
-    from .events import TonikaEvent, ModuleStatus
+    from .bus import EventHandler, TonikaBus
+    from .events import ModuleStatus, TonikaEvent
 except ImportError:
-    from bus import TonikaBus, EventHandler
-    from events import TonikaEvent, ModuleStatus
+    from bus import EventHandler, TonikaBus
+    from events import ModuleStatus, TonikaEvent
 
 
 class TonikaModule:
@@ -64,7 +65,7 @@ class TonikaModule:
 
         # Track subscriptions for automatic cleanup
         # Goblin Law #7: No Fat Orcs - clean up after yourself
-        self._unsubs: List[Callable[[], None]] = []
+        self._unsubs: list[Callable[[], None]] = []
 
         # Access to the Bus (singleton)
         self._bus = TonikaBus()
@@ -191,7 +192,7 @@ class TonikaModule:
     async def wait_for(
             self,
             event_type: str,
-            timeout_ms: Optional[int] = None
+            timeout_ms: int | None = None
     ) -> TonikaEvent:
         """
         Wait for a specific event before continuing.
@@ -244,7 +245,7 @@ class TonikaModule:
         self.status = ModuleStatus.DESTROYED
         self.logger.info(f"💀 Module destroyed: {self.name}")
 
-    def get_status(self) -> Dict[str, Any]:
+    def get_status(self) -> dict[str, Any]:
         """
         Get current module status.
 

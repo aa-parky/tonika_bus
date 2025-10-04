@@ -132,9 +132,10 @@ markers = [
 # ============================================================================
 
 [tool.ruff]
-target-version = "py312"
+target-version = "py311"
 line-length = 100
 
+[tool.ruff.lint]
 # Enable specific rule sets
 select = [
   "E",   # pycodestyle errors
@@ -154,7 +155,7 @@ ignore = [
   "E501", # Line too long (handled by black)
 ]
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 "tests/*" = ["S101"] # Allow assert in tests
 
 # ============================================================================
@@ -210,8 +211,8 @@ omit = [
   "*/tests/*",
   "*/test_*.py",
   "*/__pycache__/*",
-  "*/example_usage.py",  # ← Add this
-  "*/examples/*"         # ← Add this
+  "*/example_usage.py",
+  "*/examples/*",
 ]
 
 [tool.coverage.report]
@@ -223,4 +224,6 @@ exclude_lines = [
   "if __name__ == .__main__.:",
   "if TYPE_CHECKING:",
   "@abstractmethod",
+  "except ImportError:",
+  "pass  # ",
 ]

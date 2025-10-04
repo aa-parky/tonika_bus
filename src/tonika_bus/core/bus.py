@@ -15,17 +15,18 @@ Part of the Tonika project - Music as Resistance
 import asyncio
 import logging
 from collections import deque
-from typing import Any, Callable, Dict, List, Optional, Set, Deque, TYPE_CHECKING
+from collections.abc import Callable
+from typing import TYPE_CHECKING, Any, Optional
 
 # Handle both package and standalone imports
 try:
-    from .events import TonikaEvent, EventMetadata
+    from .events import EventMetadata, TonikaEvent
 except ImportError:
-    from events import TonikaEvent, EventMetadata
+    from events import EventMetadata, TonikaEvent
 
 # Avoid circular import for type hints
 if TYPE_CHECKING:
-    from .module import TonikaModule
+    pass
 
 # Type alias for event handlers
 EventHandler = Callable[[TonikaEvent], None]
@@ -72,23 +73,23 @@ class TonikaBus:
         """
         if not TonikaBus._initialized:
             # Event handlers: event_type -> set of handler functions
-            self.handlers: Dict[str, Set[EventHandler]] = {}
+            self.handlers: dict[str, set[EventHandler]] = {}
 
             # Module registry: module_name -> module instance
             # Goblin Law #13: Keep the Guest List Clean
-            self.module_registry: Dict[str, Any] = {}  # Any to avoid circular import
+            self.module_registry: dict[str, Any] = {}  # Any to avoid circular import
 
             # Event log: bounded deque to prevent unbounded memory growth
             # Goblin Law #7: No Fat Orcs - keep it lean
             self._event_log_maxlen: int = 1000
-            self.event_log: Deque[TonikaEvent] = deque(maxlen=self._event_log_maxlen)
+            self.event_log: deque[TonikaEvent] = deque(maxlen=self._event_log_maxlen)
 
             # Debug mode and logging
             self.debug: bool = False
             self.logger = logging.getLogger('TonikaBus')
 
             # Wait promises for async event waiting
-            self._wait_promises: Dict[str, List[asyncio.Future]] = {}
+            self._wait_promises: dict[str, list[asyncio.Future]] = {}
 
             TonikaBus._initialized = True
             self.logger.info("🚌 Tonika Bus initialized - Goblin Law #37 enforcement active")
@@ -221,7 +222,7 @@ class TonikaBus:
     async def wait_for(
             self,
             event_type: str,
-            timeout_ms: Optional[int] = None
+            timeout_ms: int | None = None
     ) -> TonikaEvent:
         """
         Wait for a specific event before continuing (async).
@@ -252,10 +253,9 @@ class TonikaBus:
         if timeout_ms:
             timeout_seconds = timeout_ms / 1000.0
             return await asyncio.wait_for(future, timeout=timeout_seconds)
-        else:
-            return await future
+        return await future
 
-    def get_event_log(self, limit: Optional[int] = None) -> List[TonikaEvent]:
+    def get_event_log(self, limit: int | None = None) -> list[TonikaEvent]:
         """
         Get recent events from the log.
 
@@ -307,7 +307,7 @@ class TonikaBus:
             del self.module_registry[module_name]
             self.logger.info(f"🗑️  Module unregistered: {module_name}")
 
-    def get_module(self, module_name: str) -> Optional[Any]:
+    def get_module(self, module_name: str) -> Any | None:
         """
         Get a module by name.
 
@@ -322,7 +322,7 @@ class TonikaBus:
         """
         return self.module_registry.get(module_name)
 
-    def list_modules(self) -> List[str]:
+    def list_modules(self) -> list[str]:
         """
         Get list of all registered module names.
 
