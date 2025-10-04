@@ -16,3 +16,5 @@ python:
     # Install the project itself so autodoc can import it
     - method: pip
       path: .
+    # Install docs-specific requirements (MyST Markdown, RTD theme, etc.)
+    - requirements: docs/requirements.txt
