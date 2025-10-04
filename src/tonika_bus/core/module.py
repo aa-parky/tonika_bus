@@ -16,13 +16,9 @@ import logging
 from collections.abc import Callable
 from typing import Any
 
-# Handle both package and standalone imports
-try:
-    from .bus import EventHandler, TonikaBus
-    from .events import ModuleStatus, TonikaEvent
-except ImportError:
-    from bus import EventHandler, TonikaBus
-    from events import ModuleStatus, TonikaEvent
+# Import from package (MyPy-friendly)
+from tonika_bus.core.bus import EventHandler, TonikaBus
+from tonika_bus.core.events import ModuleStatus, TonikaEvent
 
 
 class TonikaModule:

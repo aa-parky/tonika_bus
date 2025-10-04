@@ -18,11 +18,9 @@ from collections import deque
 from collections.abc import Callable
 from typing import TYPE_CHECKING, Any, Optional
 
-# Handle both package and standalone imports
-try:
-    from .events import EventMetadata, TonikaEvent
-except ImportError:
-    from events import EventMetadata, TonikaEvent
+
+# Import from package (MyPy-friendly)
+from tonika_bus.core.events import EventMetadata, TonikaEvent
 
 # Avoid circular import for type hints
 if TYPE_CHECKING:
