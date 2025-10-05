@@ -1,6 +1,8 @@
 # Tonika
 
-[![Coverage Status](https://coveralls.io/repos/github/aa-parky/tonika_bus/badge.svg?branch=development)](https://coveralls.io/github/aa-parky/tonika_bus?branch=development)
+[![Build Status](https://github.com/aa-parky/tonika_bus/actions/workflows/ci.yml/badge.svg)](https://github.com/aa-parky/tonika_bus/actions)
+[![Coverage Status](https://coveralls.io/repos/github/aa-parky/tonika_bus/badge.svg?branch=main)](https://coveralls.io/github/aa-parky/tonika_bus?branch=main)
+[![Documentation Status](https://readthedocs.org/projects/tonika-bus/badge/?version=latest)](https://tonika-bus.readthedocs.io/en/latest/)
 
 | ![tonika_logo_04v_small.png](assets/images/tonika_logo_04v_small.png) | ![tonika_bus_02_small.png](assets/images/tonika_bus_02_small.png) |  
 |-----------------------------------------------------------------------|-------------------------------------------------------------------|
