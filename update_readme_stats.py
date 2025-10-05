@@ -24,7 +24,7 @@ from pathlib import Path
 def count_tests_in_file(filepath: Path) -> int:
     """Count test functions in a Python test file."""
     try:
-        with open(filepath, "r") as f:
+        with open(filepath) as f:
             tree = ast.parse(f.read())
 
         count = 0
@@ -57,7 +57,7 @@ def get_coverage_stats() -> dict:
             ["pytest", "--cov=tonika_bus.core", "--cov-report=term", "--tb=no", "-q"],
             capture_output=True,
             text=True,
-            timeout=60
+            timeout=60,
         )
 
         # Parse coverage output
@@ -180,7 +180,7 @@ def update_readme():
         print("ERROR: README.md not found")
         return False
 
-    with open(readme_path, "r") as f:
+    with open(readme_path) as f:
         content = f.read()
 
     # Get statistics
@@ -206,12 +206,7 @@ def update_readme():
     # Update file tree section
     tree_pattern = r"(## Current Project Structure\s+```\s*)(.*?)(\s*```)"
     if re.search(tree_pattern, content, re.DOTALL):
-        content = re.sub(
-            tree_pattern,
-            f"\\1\n{file_tree}\n\\3",
-            content,
-            flags=re.DOTALL
-        )
+        content = re.sub(tree_pattern, f"\\1\n{file_tree}\n\\3", content, flags=re.DOTALL)
         print("✓ Updated file tree")
     else:
         print("⚠ Could not find file tree section")
@@ -219,15 +214,11 @@ def update_readme():
     # Update coverage table section
     coverage_pattern = r"(### Test Coverage\s+```\s*)(.*?)(\s*```\s*\*\*)\d+ tests, \d+% coverage"
     if re.search(coverage_pattern, content, re.DOTALL):
+
         def replace_coverage(match):
             return f"{match.group(1)}\n{coverage_table}\n{match.group(3)}{total_tests} tests, {total_coverage}% coverage"
 
-        content = re.sub(
-            coverage_pattern,
-            replace_coverage,
-            content,
-            flags=re.DOTALL
-        )
+        content = re.sub(coverage_pattern, replace_coverage, content, flags=re.DOTALL)
         print("✓ Updated coverage table")
     else:
         print("⚠ Could not find coverage section")
@@ -236,7 +227,7 @@ def update_readme():
     with open(readme_path, "w") as f:
         f.write(content)
 
-    print(f"\n📊 Statistics:")
+    print("\n📊 Statistics:")
     print(f"   Total tests: {total_tests}")
     print(f"   Coverage: {total_coverage}%")
     print(f"   test_bus.py: {test_counts.get('test_bus.py', 0)} tests")

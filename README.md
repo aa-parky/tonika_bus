@@ -176,6 +176,7 @@ asyncio.run(main())
 
 ```
 
+
 tonika_bus/                          # ✅ COMPLETE - Core event system
 ├── src/
 │   └── tonika_bus/                  # Main package
@@ -210,6 +211,7 @@ tonika_bus/                          # ✅ COMPLETE - Core event system
 ├── pyproject.toml                   # Package configuration
 ├── LICENSE                          # GPL-3.0
 └── README.md                        # This file
+
 
 ```
 
@@ -555,6 +557,7 @@ open htmlcov/index.html
 
 ```
 
+
 Name                Coverage
 ----------------------------------
 src/tonika_bus/core/bus.py       99%
@@ -562,6 +565,7 @@ src/tonika_bus/core/events.py   100%
 src/tonika_bus/core/module.py    98%
 ----------------------------------
 TOTAL                            99%
+
 
 ```
 
