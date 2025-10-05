@@ -5,6 +5,7 @@
 
 import os
 import sys
+from datetime import datetime
 
 sys.path.insert(0, os.path.abspath("../src"))
 
@@ -15,6 +16,10 @@ project = "tonika-bus"
 copyright = "2025, aa-parky"
 author = "aa-parky"
 release = "0.2.0"
+
+# Add build timestamp for peace of mind
+build_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S UTC")
+html_last_updated_fmt = "%Y-%m-%d %H:%M:%S UTC"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -55,3 +60,11 @@ source_suffix = {
 
 # MyST configuration: treat all Markdown links as external to avoid cross-ref warnings
 myst_all_links_external = True
+
+# Add build date to HTML context for display in footer
+html_context = {
+    'build_date': build_date,
+}
+
+# Show "Last updated" in the footer
+html_show_sphinx = True
