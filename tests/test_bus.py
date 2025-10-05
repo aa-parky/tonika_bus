@@ -784,6 +784,7 @@ class TestTonikaBusIntegration:
 
         assert results == ["step1", "step2", "step3"]
 
+
 """
 Comprehensive test suite for TonikaBus (bus.py)
 
@@ -801,12 +802,8 @@ Goblin Law #37: Never Meddle in Another Goblin's Guts
 These tests verify the Bus enforces proper communication patterns.
 """
 
-import asyncio
 
 import pytest
-
-from tonika_bus.core.bus import TonikaBus
-from tonika_bus.core.events import TonikaEvent
 
 # ============================================================================
 # Singleton Pattern Tests
@@ -1489,6 +1486,7 @@ class TestTonikaBusDebug:
 
         fresh_bus.set_debug(True)
         with caplog.at_level(logging.DEBUG, logger="TonikaBus"):
+
             def handler(event):
                 pass
 

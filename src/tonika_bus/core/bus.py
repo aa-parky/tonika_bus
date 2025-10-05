@@ -15,9 +15,8 @@ Part of the Tonika project - Music as Resistance
 import asyncio
 import logging
 from collections import deque
-from collections.abc import Callable
-from typing import TYPE_CHECKING, Any, Optional, Awaitable, Coroutine
-
+from collections.abc import Callable, Coroutine
+from typing import TYPE_CHECKING, Any, Optional
 
 # Import from package (MyPy-friendly)
 from tonika_bus.core.events import EventMetadata, TonikaEvent
