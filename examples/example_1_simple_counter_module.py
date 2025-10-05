@@ -3,7 +3,9 @@
 # Requires: `tonika_bus` package available on PYTHONPATH
 
 import asyncio
+
 from tonika_bus import TonikaBus, TonikaModule
+
 
 class CounterModule(TonikaModule):
     async def _initialize(self):
@@ -20,6 +22,7 @@ class CounterModule(TonikaModule):
         self.count = 0
         self.emit("counter:changed", {"count": self.count})
 
+
 async def main():
     bus = TonikaBus()
     counter = CounterModule("Counter", "1.0.0")
@@ -31,6 +34,7 @@ async def main():
 
     await asyncio.sleep(0.1)  # Let handlers run
     counter.destroy()
+
 
 if __name__ == "__main__":
     asyncio.run(main())

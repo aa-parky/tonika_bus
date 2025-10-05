@@ -586,7 +586,7 @@ TOTAL                            93%
 
 For future UI development:
 
-- **[Theme Architecture](docs/tonika_css_architecture.md)** - Design and UI customization (if available)
+
 
 ```
 ┌─────────────────────────────────────────────────────────┐

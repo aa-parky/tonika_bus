@@ -16,7 +16,7 @@ import asyncio
 import logging
 from collections import deque
 from collections.abc import Callable, Coroutine
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any, Optional, cast
 
 # Import from package (MyPy-friendly)
 from tonika_bus.core.events import EventMetadata, TonikaEvent
@@ -47,7 +47,7 @@ class TonikaBus:
     _instance: Optional["TonikaBus"] = None
     _initialized: bool = False
 
-    def __new__(cls):
+    def __new__(cls) -> "TonikaBus":
         """
         Singleton pattern - only one Bus exists.
 
@@ -58,7 +58,7 @@ class TonikaBus:
             cls._instance = super().__new__(cls)
         return cls._instance
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Initialize Bus components (only once due to singleton).
 
@@ -86,7 +86,7 @@ class TonikaBus:
             self.logger = logging.getLogger("TonikaBus")
 
             # Wait promises for async event waiting
-            self._wait_promises: dict[str, list[asyncio.Future]] = {}
+            self._wait_promises: dict[str, list[asyncio.Future[TonikaEvent]]] = {}
 
             TonikaBus._initialized = True
             self.logger.info("🚌 Tonika Bus initialized - Goblin Law #37 enforcement active")
@@ -188,7 +188,7 @@ class TonikaBus:
             self.logger.debug(f"👂 SUBSCRIBE: {event_type} (total handlers: {handler_count})")
 
         # Return unsubscribe function
-        def unsubscribe():
+        def unsubscribe() -> None:
             if event_type in self.handlers and handler in self.handlers[event_type]:
                 self.handlers[event_type].remove(handler)
                 if self.debug:
@@ -212,7 +212,7 @@ class TonikaBus:
         """
         unsub = None
 
-        def one_time_handler(event: TonikaEvent):
+        def one_time_handler(event: TonikaEvent) -> None:
             try:
                 if asyncio.iscoroutinefunction(handler):
                     try:
@@ -249,7 +249,7 @@ class TonikaBus:
         Raises:
             asyncio.TimeoutError: If timeout is reached
         """
-        future = asyncio.get_event_loop().create_future()
+        future = cast(asyncio.Future[TonikaEvent], asyncio.get_event_loop().create_future())
 
         if event_type not in self._wait_promises:
             self._wait_promises[event_type] = []
