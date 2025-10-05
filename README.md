@@ -175,6 +175,8 @@ asyncio.run(main())
 ## Current Project Structure
 
 ```
+
+
 tonika_bus/                          # ✅ COMPLETE - Core event system
 ├── src/
 │   └── tonika_bus/                  # Main package
@@ -183,32 +185,34 @@ tonika_bus/                          # ✅ COMPLETE - Core event system
 │           ├── __init__.py          # Core exports
 │           ├── bus.py               # TonikaBus singleton
 │           ├── module.py            # TonikaModule base class
-│           ├── events.py            # Event structures
-│           └── example_usage.py     # Basic example
+│           └── events.py            # Event structures
 │
-├── tests/                           # ✅ 106 tests, 93% coverage
+├── tests/                           # ✅ 82 tests
 │   ├── __init__.py
 │   ├── conftest.py                  # Shared fixtures
-│   ├── test_bus.py                  # Bus tests (46 tests)
+│   ├── test_bus.py                  # Bus tests (44 tests)
 │   ├── test_events.py               # Event tests (35 tests)
-│   └── test_module.py               # Module tests (25 tests)
+│   └── test_module.py               # Module tests (3 tests)
+│
+├── examples/                        # Working examples
+│   ├── example_1_simple_counter_module.py
+│   ├── example_2_midi_like_system.py
+│   ├── example_3_request_response.py
+│   └── example_4_module_dependencies.py
 │
 ├── docs/                            # Documentation
-│   └── tonika_bus_readme.md         # Detailed Bus docs
-│
-├── assets/                          # Images and visual assets
-│   └── images/
-│       ├── tonika_logo_04v_small.png
-│       ├── tonika_bus_02_small.png
-│       ├── tonika_3_layer_arch_small.png
-│       ├── tonika_3_tier_css_small.png
-│       ├── tonika_goblin_law_small.png
-│       └── tonika_gpl_3_small.png
+│   ├── conf.py                      # Sphinx configuration
+│   ├── index.rst                    # Documentation index
+│   ├── tonika_bus_readme.md         # Detailed Bus docs
+│   ├── goblin-laws.md               # Design principles
+│   └── examples.md                  # Example documentation
 │
 ├── htmlcov/                         # Coverage reports
 ├── pyproject.toml                   # Package configuration
 ├── LICENSE                          # GPL-3.0
 └── README.md                        # This file
+
+
 ```
 
 ### Future Structure (Planned)
@@ -552,16 +556,20 @@ open htmlcov/index.html
 ### Test Coverage
 
 ```
+
+
 Name                Coverage
 ----------------------------------
-src/tonika_bus/core/bus.py       92%
+src/tonika_bus/core/bus.py       99%
 src/tonika_bus/core/events.py   100%
-src/tonika_bus/core/module.py    93%
+src/tonika_bus/core/module.py    98%
 ----------------------------------
-TOTAL                            93%
+TOTAL                            99%
+
+
 ```
 
-**106 tests, 93% coverage, all passing in < 1 second** ⚡
+**82 tests, 99% coverage, all passing in < 1 second** ⚡
 
 ---
 
@@ -586,7 +594,7 @@ TOTAL                            93%
 
 For future UI development:
 
-- **[Theme Architecture](docs/tonika_css_architecture.md)** - Design and UI customization (if available)
+
 
 ```
 ┌─────────────────────────────────────────────────────────┐

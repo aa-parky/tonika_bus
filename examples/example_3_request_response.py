@@ -3,7 +3,9 @@
 # Requires: `tonika_bus` package available on PYTHONPATH
 
 import asyncio
+
 from tonika_bus import TonikaModule
+
 
 class DataProvider(TonikaModule):
     async def _initialize(self):
@@ -15,10 +17,8 @@ class DataProvider(TonikaModule):
         key = event.detail["key"]
 
         # Send response
-        self.emit("data:response", {
-            "request_id": request_id,
-            "value": self.data.get(key)
-        })
+        self.emit("data:response", {"request_id": request_id, "value": self.data.get(key)})
+
 
 class DataConsumer(TonikaModule):
     async def _initialize(self):
@@ -31,11 +31,9 @@ class DataConsumer(TonikaModule):
 
     def request_data(self, key):
         request_id = f"req_{id(self)}_{key}"
-        self.emit("data:request", {
-            "request_id": request_id,
-            "key": key
-        })
+        self.emit("data:request", {"request_id": request_id, "key": key})
         return request_id
+
 
 async def main():
     provider = DataProvider("Provider", "1.0.0")
@@ -54,6 +52,7 @@ async def main():
 
     provider.destroy()
     consumer.destroy()
+
 
 if __name__ == "__main__":
     asyncio.run(main())
