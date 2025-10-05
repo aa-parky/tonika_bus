@@ -16,7 +16,7 @@ import asyncio
 import logging
 from collections import deque
 from collections.abc import Callable
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any, Optional, Awaitable, Coroutine
 
 
 # Import from package (MyPy-friendly)
@@ -26,8 +26,8 @@ from tonika_bus.core.events import EventMetadata, TonikaEvent
 if TYPE_CHECKING:
     pass
 
-# Type alias for event handlers
-EventHandler = Callable[[TonikaEvent], None]
+# Type alias for event handlers (sync or async)
+EventHandler = Callable[[TonikaEvent], None] | Callable[[TonikaEvent], Coroutine[Any, Any, None]]
 
 
 class TonikaBus:
@@ -114,6 +114,12 @@ class TonikaBus:
         Goblin Law #8: All Goblins Are Boundary Guards
         Everything that happens in Tonika flows through the Bus first.
 
+        Notes:
+            - Handlers may be synchronous or asynchronous (coroutine) functions.
+            - Asynchronous handlers are scheduled with asyncio.create_task() when a loop is running
+              to avoid blocking the event loop; when no loop is running, they are executed via
+              asyncio.run().
+
         Args:
             event_type: Event type (e.g., "midi:note-on", "module:ready")
             detail: The actual payload data
@@ -138,7 +144,15 @@ class TonikaBus:
         if event_type in self.handlers:
             for handler in list(self.handlers[event_type]):
                 try:
-                    handler(event)
+                    if asyncio.iscoroutinefunction(handler):
+                        try:
+                            loop = asyncio.get_running_loop()
+                            loop.create_task(handler(event))
+                        except RuntimeError:
+                            # No running loop; run synchronously to ensure execution
+                            asyncio.run(handler(event))
+                    else:
+                        handler(event)
                 except Exception as e:
                     self.logger.error(f"❌ Handler error for {event_type}: {e}", exc_info=True)
 
@@ -160,7 +174,7 @@ class TonikaBus:
 
         Args:
             event_type: The event type to listen for
-            handler: Function to call when event occurs
+            handler: Function to call when event occurs (sync or async)
 
         Returns:
             Unsubscribe function (call it to stop listening)
@@ -188,10 +202,11 @@ class TonikaBus:
         Subscribe to an event type, but only fire once.
 
         Automatically unsubscribes after the first event.
+        Supports both sync and async handlers; async handlers are scheduled.
 
         Args:
             event_type: The event type to listen for
-            handler: Function to call when event occurs
+            handler: Function to call when event occurs (sync or async)
 
         Returns:
             Unsubscribe function (in case you want to cancel early)
@@ -199,9 +214,18 @@ class TonikaBus:
         unsub = None
 
         def one_time_handler(event: TonikaEvent):
-            handler(event)
-            if unsub:
-                unsub()
+            try:
+                if asyncio.iscoroutinefunction(handler):
+                    try:
+                        loop = asyncio.get_running_loop()
+                        loop.create_task(handler(event))
+                    except RuntimeError:
+                        asyncio.run(handler(event))
+                else:
+                    handler(event)
+            finally:
+                if unsub:
+                    unsub()
 
         unsub = self.on(event_type, one_time_handler)
         return unsub
