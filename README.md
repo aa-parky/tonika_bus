@@ -1,5 +1,7 @@
 # Tonika
 
+[![Coverage Status](https://coveralls.io/repos/github/aa-parky/tonika_bus/badge.svg?branch=development)](https://coveralls.io/github/aa-parky/tonika_bus?branch=development)
+
 | ![tonika_logo_04v_small.png](assets/images/tonika_logo_04v_small.png) | ![tonika_bus_02_small.png](assets/images/tonika_bus_02_small.png) |  
 |-----------------------------------------------------------------------|-------------------------------------------------------------------|
 
