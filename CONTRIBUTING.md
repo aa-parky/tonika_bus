@@ -6,7 +6,7 @@ This is a personal project born from a love of music and a desire for simpler to
 
 ## 🧌 The Goblin Way: Our Philosophy
 
-Before you dive in, please take a moment to read our **[Goblin Laws](docs/goblin-laws.md)**. These are the core principles that guide our development. The most important ones for contributors are:
+Before you dive in, please take a moment to read our **[Goblin Laws](docs/goblin_laws.md)**. These are the core principles that guide our development. The most important ones for contributors are:
 
 - **Law #7: No Fat Orcs:** Each module, function, or PR should do one thing well. Keep it lean and focused.
 - **Law #37: Never Meddle in Another Goblin’s Guts:** All communication between modules **must** go through the `TonikaBus`. No direct calls, no sneaky state changes.

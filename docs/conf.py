@@ -66,5 +66,11 @@ html_context = {
     'build_date': build_date,
 }
 
+# Add this to conf.py
+intersphinx_mapping = {
+    'python': ('https://docs.python.org/3', None),
+    'mido': ('https://mido.readthedocs.io/en/latest/', None),
+}
+
 # Show "Last updated" in the footer
 html_show_sphinx = True
