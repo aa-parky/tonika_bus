@@ -1,0 +1,133 @@
+# Release Drafter Configuration for Tonika Bus
+# Automatically drafts release notes from labeled PRs
+#
+# Documentation: https://github.com/release-drafter/release-drafter
+
+name-template: 'v$RESOLVED_VERSION'
+tag-template: 'v$RESOLVED_VERSION'
+
+# Categorize changes by PR labels
+categories:
+  - title: '🎉 Added'
+    labels:
+      - 'enhancement'
+      - 'feature'
+      - 'added'
+  - title: '🔄 Changed'
+    labels:
+      - 'change'
+      - 'changed'
+      - 'refactor'
+  - title: '🐛 Fixed'
+    labels:
+      - 'bug'
+      - 'bugfix'
+      - 'fix'
+      - 'fixed'
+  - title: '🗑️ Removed'
+    labels:
+      - 'removed'
+      - 'deprecation'
+  - title: '🔒 Security'
+    labels:
+      - 'security'
+  - title: '📚 Documentation'
+    labels:
+      - 'documentation'
+      - 'docs'
+  - title: '🧪 Testing'
+    labels:
+      - 'test'
+      - 'testing'
+  - title: '⚙️ Internal'
+    labels:
+      - 'chore'
+      - 'dependencies'
+      - 'ci'
+
+# Exclude certain labels from changelog
+exclude-labels:
+  - 'skip-changelog'
+  - 'duplicate'
+  - 'invalid'
+  - 'wontfix'
+
+# Template for each change entry
+change-template: '- $TITLE (#$NUMBER) @$AUTHOR'
+change-title-escapes: '\<*_&'
+
+# Version number resolution based on labels
+version-resolver:
+  major:
+    labels:
+      - 'major'
+      - 'breaking'
+      - 'breaking-change'
+  minor:
+    labels:
+      - 'minor'
+      - 'feature'
+      - 'enhancement'
+  patch:
+    labels:
+      - 'patch'
+      - 'bug'
+      - 'bugfix'
+      - 'fix'
+      - 'documentation'
+      - 'chore'
+  default: patch
+
+# Main release notes template
+template: |
+  ## What's Changed
+  
+  $CHANGES
+  
+  ## 🧌 Goblin Notes
+  
+  This release maintains compatibility with existing modules following Goblin Law #37 (Never Meddle in Another Goblin's Guts).
+  
+  **Full Changelog**: https://github.com/aa-parky/tonika_bus/compare/$PREVIOUS_TAG...v$RESOLVED_VERSION
+  
+  ---
+  
+  **Installation:**
+  ```bash
+  pip install tonika-bus==$RESOLVED_VERSION
+  ```
+  
+  **Upgrade:**
+  ```bash
+  pip install --upgrade tonika-bus
+  ```
+
+# Auto-label PRs based on branch names and files
+autolabeler:
+  - label: 'documentation'
+    branch:
+      - '/docs{0,1}\/.+/'
+    files:
+      - '*.md'
+      - 'docs/**/*'
+  - label: 'bug'
+    branch:
+      - '/fix\/.+/'
+      - '/bugfix\/.+/'
+    title:
+      - '/fix/i'
+      - '/bug/i'
+  - label: 'feature'
+    branch:
+      - '/feature\/.+/'
+      - '/feat\/.+/'
+  - label: 'test'
+    files:
+      - 'tests/**/*'
+  - label: 'ci'
+    files:
+      - '.github/**/*'
+  - label: 'dependencies'
+    files:
+      - 'pyproject.toml'
+      - 'requirements*.txt'
