@@ -1,0 +1,1 @@
+# Release Drafter is working! 🧌
