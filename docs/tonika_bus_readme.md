@@ -380,6 +380,24 @@ print(f"MIDI ready at {event._meta.timestamp}")
 
 **Raises:** `asyncio.TimeoutError` if timeout is reached
 
+**⚠️ CRITICAL SAFETY WARNING:**
+
+**Always use timeouts in production code.** If you call `wait_for()` without a timeout and the event never arrives, the future will remain in memory indefinitely, causing a memory leak.
+
+```python
+# ❌ DANGEROUS: Memory leak if event never arrives
+await self.wait_for("database:ready")
+
+# ✅ SAFE: Will timeout and raise exception
+await self.wait_for("database:ready", timeout_ms=5000)
+```
+
+**Why this matters:**
+- Events can fail to arrive due to bugs, crashes, or network issues
+- Unbounded waits accumulate in memory over time
+- Memory leaks cause mysterious production failures
+- Timeouts make failures explicit and debuggable
+
 ---
 
 #### `get_event_log(limit=None) → List[TonikaEvent]`
@@ -597,6 +615,8 @@ async def _initialize(self):
     await self.wait_for("database:ready", timeout_ms=5000)
     # Now safe to use database
 ```
+
+**⚠️ Always use timeouts in production!** See the critical safety warning in the `TonikaBus.wait_for()` documentation above.
 
 ---
 
@@ -889,7 +909,8 @@ class ApiGoblin(TonikaModule):
     async def _initialize(self):
         print("🌐 API: Waiting for database...")
         
-        # Wait for database before starting
+        # ⚠️ ALWAYS use timeout in production!
+        # This prevents memory leaks if database:ready never arrives
         await self.wait_for("database:ready", timeout_ms=5000)
         
         print("🌐 API: Database is ready! Starting API server...")
@@ -924,6 +945,10 @@ asyncio.run(main())
 
 ✅ Both modules ready!
 ```
+
+**⚠️ Important Note About Timeouts:**
+
+This example uses `timeout_ms=5000` (5 seconds). In production code, **always include a timeout**. Without it, if the `"database:ready"` event never arrives (due to a bug, crash, or network issue), the future will remain in memory indefinitely, causing a memory leak. See the [Bus Architecture Guide](BUS_GUIDE.md) for more details on safe `wait_for()` usage.
 
 ---
 

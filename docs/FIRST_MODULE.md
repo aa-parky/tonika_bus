@@ -387,7 +387,7 @@ async def main():
    📝 Logged: 10 (history: [5, 8, 10])
 ```
 
-**Notice:** The two modules don't know about each other! They only communicate through events! 🎯
+**Notice:** The two modules don't know about each other! They only communicate through events!
 
 ---
 
@@ -422,16 +422,39 @@ Check out the working examples in [examples](../examples):
 - `example_3_request_response.py` - Request/response patterns
 - `example_4_module_dependencies.py` - Module dependencies with `wait_for()`
 
+**CRITICAL: About `wait_for()` and Timeouts**
+
+Example 4 demonstrates `wait_for()` - a powerful way to handle module dependencies. However, there's a critical safety concern you must understand:
+
+```python
+# DANGEROUS: No timeout
+await self.wait_for("database:ready")
+# If "database:ready" never arrives, this future stays in memory FOREVER
+# causing a memory leak that will slowly kill your application
+
+# SAFE: Always use timeout in production
+await self.wait_for("database:ready", timeout_ms=5000)
+# Will raise asyncio.TimeoutError after 5 seconds if event never arrives
+```
+
+**Why this matters:**
+- Futures without timeouts remain in memory indefinitely
+- In production, events can fail to arrive due to bugs, crashes, or network issues
+- Memory leaks are hard to debug and can cause mysterious failures
+- **Always, always, always use timeouts in production code**
+
+See [BUS_GUIDE.md](BUS_GUIDE.md) for more details on safe `wait_for()` usage.
+
 ### Common Pitfalls
 
-**❌ Forgetting to call `init()`:**
+**Forgetting to call `init()`:**
 ```python
 counter = CounterGoblin()
 # Forgot: await counter.init()
 bus.emit("counter:increment", {})  # Handler not registered!
 ```
 
-**❌ Forgetting to call `destroy()`:**
+**Forgetting to call `destroy()`:**
 ```python
 counter = CounterGoblin()
 await counter.init()
@@ -439,29 +462,38 @@ await counter.init()
 # Forgot: counter.destroy()  # Memory leak!
 ```
 
-**❌ Overriding `init()` instead of `_initialize()`:**
+**Overriding `init()` instead of `_initialize()`:**
 ```python
 class BadGoblin(TonikaModule):
-    async def init(self):  # ❌ WRONG
+    async def init(self):  # WRONG
         self.on("event", self.handle)
 
 class GoodGoblin(TonikaModule):
-    async def _initialize(self):  # ✅ CORRECT
+    async def _initialize(self):  # CORRECT
         self.on("event", self.handle)
 ```
 
-**❌ Calling module methods directly:**
+**Calling module methods directly:**
 ```python
 counter = CounterGoblin()
 await counter.init()
 
-counter.handle_increment(...)  # ❌ VIOLATION OF GOBLIN LAW #37!
+counter.handle_increment(...)  # VIOLATION OF GOBLIN LAW #37!
 
-bus.emit("counter:increment", {...})  # ✅ CORRECT
+bus.emit("counter:increment", {...})  # CORRECT
+```
+
+**Using `wait_for()` without timeout:**
+```python
+# DANGEROUS: Memory leak waiting to happen
+await self.wait_for("some:event")
+
+# SAFE: Always include timeout
+await self.wait_for("some:event", timeout_ms=5000)
 ```
 
 ---
 
-**🧌 Now go create your own Goblins!** 🎵
+**Now go create your own Goblins!**
 
 *Remember: Never Meddle in Another Goblin's Guts!* — Goblin Law #37
