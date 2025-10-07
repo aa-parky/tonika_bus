@@ -1,0 +1,66 @@
+# PR Labels for Release Drafter
+# These labels are used to categorize changes in release notes
+#
+# To apply these labels to your GitHub repo, use the GitHub CLI:
+#   gh label create bug --color d73a4a --description "Something isn't working"
+#   gh label create feature --color a2eeef --description "New feature or request"
+#   ... (repeat for each label)
+#
+# Or apply them all at once manually via the GitHub web UI:
+#   https://github.com/aa-parky/tonika_bus/labels
+
+- name: bug
+  color: d73a4a
+  description: Something isn't working
+
+- name: feature
+  color: a2eeef
+  description: New feature or request
+
+- name: enhancement
+  color: a2eeef
+  description: Enhancement to existing feature
+
+- name: documentation
+  color: 0075ca
+  description: Improvements or additions to documentation
+
+- name: test
+  color: d4c5f9
+  description: Testing improvements
+
+- name: chore
+  color: fef2c0
+  description: Maintenance and chores
+
+- name: ci
+  color: 00ff00
+  description: CI/CD related
+
+- name: dependencies
+  color: 0366d6
+  description: Dependency updates
+
+- name: security
+  color: ee0701
+  description: Security fixes
+
+- name: breaking
+  color: b60205
+  description: Breaking change (major version)
+
+- name: major
+  color: b60205
+  description: Major version bump
+
+- name: minor
+  color: fbca04
+  description: Minor version bump
+
+- name: patch
+  color: c2e0c6
+  description: Patch version bump
+
+- name: skip-changelog
+  color: cccccc
+  description: Skip this PR in the changelog
