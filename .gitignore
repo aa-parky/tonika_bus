@@ -178,3 +178,6 @@ __marimo__/
 /test_results.txt
 /tree.txt
 /docs/api/generated/
+
+# OSX
+.DS_Store
